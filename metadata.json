@@ -1,0 +1,5 @@
+{
+  "name": "课堂随机点名",
+  "description": "A modern, fair, and easy-to-use random student selector for teachers. Features duplicate detection, history tracking, and a fair shuffling algorithm.",
+  "requestFramePermissions": []
+}
