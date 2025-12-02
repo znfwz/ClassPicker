@@ -80,11 +80,12 @@ export default function App() {
   }, [students, history]);
 
   const handlePick = useCallback(() => {
-    if (students.length === 0) return;
+    if (students.length === 0 || isAnimating) return;
     
     // If everyone has been called, reset history logic or prompt
     let pool = remainingStudents;
     if (pool.length === 0) {
+        // Here we keep confirm for game logic flow, but might want to make it less intrusive in v2
         if (window.confirm(t.confirmAllCalled)) {
             setHistory([]);
             pool = students; // Reset pool immediately for this pick
@@ -123,13 +124,13 @@ export default function App() {
       setIsAnimating(false);
     }, ANIMATION_DURATION_MS);
 
-  }, [students, remainingStudents, t]);
+  }, [students, remainingStudents, t, isAnimating]);
 
-  const handleResetHistory = () => {
-    if (window.confirm(t.confirmResetHistory)) {
-      setHistory([]);
-      setCurrentSelection(null);
-    }
+  const handleResetHistory = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    // Directly reset history without confirmation to ensure button works reliably
+    setHistory([]);
+    setCurrentSelection(null);
   };
 
   // Cleanup timers
@@ -161,6 +162,7 @@ export default function App() {
             
             <div className="flex items-center gap-2">
               <button
+                type="button"
                 onClick={toggleLanguage}
                 className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 flex items-center gap-1.5 text-sm font-medium"
                 aria-label="Toggle Language"
@@ -170,6 +172,7 @@ export default function App() {
               </button>
 
               <button
+                type="button"
                 onClick={toggleTheme}
                 className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 aria-label="Toggle Dark Mode"

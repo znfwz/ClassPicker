@@ -19,16 +19,16 @@ export const InputPanel: React.FC<InputPanelProps> = ({
   t
 }) => {
   
-  const handleLoadSample = () => {
-    if (rawInput.trim() === '' || window.confirm(t.confirmLoadSample)) {
-      setRawInput(t.sampleData);
-    }
+  const handleLoadSample = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // Directly set sample data without confirmation dialog to prevent UI blocking
+    setRawInput(t.sampleData);
   };
 
-  const handleClear = () => {
-    if (window.confirm(t.confirmClear)) {
-      setRawInput('');
-    }
+  const handleClear = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // Directly clear data without confirmation dialog to prevent UI blocking
+    setRawInput('');
   };
 
   return (
@@ -43,6 +43,7 @@ export const InputPanel: React.FC<InputPanelProps> = ({
         </div>
         <div className="flex gap-2">
            <button 
+            type="button"
             onClick={handleLoadSample}
             className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:underline flex items-center gap-1"
             title="Load sample data"
